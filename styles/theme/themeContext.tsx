@@ -1,8 +1,27 @@
 import { createContext, useState, ReactNode } from 'react';
 
-const ThemeContext = createContext(null);
+interface Theme {
+  colors: {
+    primary: string;
+    background: string;
+    text: {
+      primary: string;
+      secondary: string;
+    };
+  };
+  typography: {
+    fontFamily: string;
+  };
+}
 
-const lightTheme = {
+interface ThemeContextType {
+  theme: Theme;
+  toggleTheme: () => void;
+}
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+const lightTheme: Theme = {
   colors: {
     primary: '#000000',
     background: '#ffffff',
@@ -13,10 +32,10 @@ const lightTheme = {
   },
   typography: {
     fontFamily: 'Roboto Mono, monospace',
-},
+  },
 };
 
-const darkTheme = {
+const darkTheme: Theme = {
   colors: {
     primary: '#ffffff',
     background: '#000000',
@@ -30,7 +49,11 @@ const darkTheme = {
   },
 };
 
-const ThemeProvider = ({ children }) => {
+interface ThemeProviderProps {
+  children: ReactNode;
+}
+
+const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isTheme, setIsTheme] = useState(false);
 
   const toggleTheme = () => {
